@@ -34,7 +34,7 @@ def test_intdecode_dtype():
     """'intdecode' function: 'dtype' argument"""
     # set dtype
     assert intdecode(IDAT, 0.5, dtype=np.float32).dtype == np.float32
-    # Not a flaotting type
+    # Not a floating type
     with pytest.raises(ValueError) as excinfo:
         intdecode(IDAT, 0.5, dtype=np.int32)
     assert 'dtype must be a floating data type' in str(excinfo.value)

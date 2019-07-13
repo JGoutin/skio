@@ -2,7 +2,7 @@
 # TODO:
 # - Find how show parameters and doc-strings for .set()/.get().
 # - Orderable Group.
-# - Autocomplete __doc__ with _doc, _dtype, ... informations for subclasses.
+# - Autocomplete __doc__ with _doc, _dtype, ... information for subclasses.
 # - Add unit information support with optional support of "pint" package.
 #   store data in group values without unit (and convert on get or set)
 # - Support for data sample/uncertainty.
@@ -13,7 +13,7 @@
 #   produced by _customfunc in place of private '_get_key' like name. Also
 #   include arguments if possible.
 # - .clear(): not remove inserted classes, but reset them
-# - in "set", make type support extensible and optionnal, starting with numpy
+# - in "set", make type support extensible and optional, starting with numpy
 
 from collections import Mapping
 from collections.abc import Iterable
@@ -34,7 +34,7 @@ except ImportError:
 
 class Group(Mapping):
     """
-    Advanced dict with optionnal features (See bellow).
+    Advanced dict with optional features (See bellow).
 
     The aim of this class is to have a dict like data structure with more
     controls of data inside.
@@ -53,7 +53,7 @@ class Group(Mapping):
         Overload the "_default" class variable with a dict containing the
         needed default value for each required key.
 
-        Exemple: _default = {'key1': 1.2, 'key2': 3}
+        Example: _default = {'key1': 1.2, 'key2': 3}
 
     Type values: overloading the "_dtype" class variable
         When value is set, value is automatically casted to specified type or
@@ -63,7 +63,7 @@ class Group(Mapping):
         Overload the "_dtype" class variable with a dict containing the
         needed type for each required key.
 
-        Exemple: _dtype = {'key1': float, 'key2': np.int16}
+        Example: _dtype = {'key1': float, 'key2': np.int16}
 
         This feature support also more advanced typing. It is possible to add
         named arguments for the specified type setting it with a tuple
@@ -72,22 +72,22 @@ class Group(Mapping):
         For numpy arrays, "ndim" int argument is added and return error if
         input array number of dimensions is not equal to "ndim".
 
-        Exemple: _dtype = {'key1': (numpy.ndarray, {'ndim': 2, 'dtype':
+        Example: _dtype = {'key1': (numpy.ndarray, {'ndim': 2, 'dtype':
         np.float64})}
 
     Documented keys: overloading the "_doc" class variable
         Return doc_string for a specified key with instance .doc(key) method.
-        Keys docstrings are also appened to the end of the subclass docstring.
+        Keys docstrings are also appended to the end of the subclass docstring.
 
         Overload the "_doc" class variable with a dict containing the
         needed docstrings for each required key.
 
-        Exemple: _dtype = {'key1': "A float number", 'key2': "A integer
+        Example: _dtype = {'key1': "A float number", 'key2': "A integer
         number"}
 
-    Advanced Getter/Setter functions: Create funtions with specific names
+    Advanced Getter/Setter functions: Create functions with specific names
         Theses functions replace standards way to get and set the value linked
-        to a key in subclass instances with possible more powerfull functions
+        to a key in subclass instances with possible more powerful functions
         and the ability to use them with more than one argument.
 
         Getter functions are called with the ".get(key, *args, **kwargs)"
@@ -120,24 +120,24 @@ class Group(Mapping):
         key. If "_funcbase" is not overloaded for a key, try to call function
         using directly the key.
 
-        Exemple: _funcbase = {'key1,12': "k112"}; for the key 'key1,12' key,
+        Example: _funcbase = {'key1,12': "k112"}; for the key 'key1,12' key,
         setter will be "_set_k112" and getter "_get_k112".
 
         "_funcbase" can also be used to redirect many key getter/setter on a
         same function.
 
-        Exemple: _funcbase = {'key1': "root", 'key2': "root"}
+        Example: _funcbase = {'key1': "root", 'key2': "root"}
 
-    Inserting other Groups or classes as Key and auto-instanciate them:
+    Inserting other Groups or classes as Key and auto-instantiate them:
         For adding groups, simply write your Group subclass definition inside
         the File Subclass directly. The class method must be "_Keyname" with
         "name" the key name to find in File.keys().
 
-        Once File is instancied, all classes inside it starting with a
-        "_Keyname" name will be automatically instanciated and will be
-        availables in File dictionnary interface.
+        Once File is instantiated, all classes inside it starting with a
+        "_Keyname" name will be automatically instantiated and will be
+        available in File dictionary interface.
 
-        Exemple: for "_keyname" class definied inside File, instance access
+        Example: for "_keyname" class defined inside File, instance access
         with "FileInstance['name']". File instance is available from Group
         instance with the "prt" or "parent" attribute.
 
@@ -149,12 +149,12 @@ class Group(Mapping):
     Writing limitation: overloading "_readonly" or "_nonewkey" class variable
         If "_readonly" is True, the subclass will be read only.
 
-        If "_nonewkey" is True, creation of new keys is forbiden.
+        If "_nonewkey" is True, creation of new keys is forbidden.
         Values for keys that already have default values can still be modified.
 
         All of theses values are False by default.
 
-        You can use the "_writeenabled" context manager to temporabilly
+        You can use the "_writeenabled" context manager to temporally
         re-enable writing.
 
     Overloading "__init__()" method:
@@ -172,10 +172,10 @@ class Group(Mapping):
         Used to populate instance with data. See dict documentation.
         Empty by default.
     """
-    # Overloadable class variables
+    # Overridable class variables
     _default = {}  # Default values dict (Used if no registered value)
     _dtype = {}  # Values types
-    _funcbase = {}  # Setter/getter functions basenames
+    _funcbase = {}  # Setter/getter functions basename
     _doc = {}  # Help/doc strings
     _readonly = False  # Read only flag
     _nonewkey = False  # New key limitation flag
@@ -199,7 +199,7 @@ class Group(Mapping):
         clsdoc = cls._doc
         values = self._values
 
-        # Instanciate attributes-classes
+        # Instantiate attributes-classes
         module = ("{0}['{1}']".format(cls.__module__, cls.__name__))
         for key in clsdict.keys():
             attr = clsdict[key]
@@ -211,15 +211,15 @@ class Group(Mapping):
             if not name.startswith('_Key'):
                 continue
 
-            # Update attribute-class informtations
+            # Update attribute-class information
             name = name[len('_Key'):]
             attr.__name__ = name
             attr.__module__ = module
 
-            # Instanciate attribute-class
+            # Instantiate attribute-class
             instance = attr()
 
-            # If attribute-class is Group, add informations
+            # If attribute-class is Group, add information
             if isinstance(instance, Group):
                 setattr(instance, '_parent', self)
                 if name not in clsdtype:
@@ -281,11 +281,11 @@ class Group(Mapping):
         ----------
         key : object
             key.
-        *args, **kwargs : optionnal
+        *args, **kwargs : optional
             Value and/or other arguments (Specific to each key).
         """
         if isinstance(self._values.get(key), Group):
-            raise PermissionError('Groups are not overwritable')
+            raise PermissionError('Groups are not overridable')
         if self._readonly:
             raise PermissionError('{} is read only'.format(self._name))
         if self._nonewkey and key not in self.keys_all():
@@ -359,7 +359,7 @@ class Group(Mapping):
         ----------
         key : object
             key.
-        *args, **kwargs : optionnal
+        *args, **kwargs : optional
             Other arguments (Specific to each key).
         """
         try:
@@ -391,7 +391,7 @@ class Group(Mapping):
 
     def __missing__(self, key):
         """
-        Raise error if key not regidtered and no default value.
+        Raise error if key not registered and no default value.
 
         Parameters
         ----------
@@ -421,7 +421,7 @@ class Group(Mapping):
             key.
         """
         if isinstance(self._values.get(key), Group):
-            raise PermissionError('Groups are not overwritable')
+            raise PermissionError('Groups are not overridable')
         if self._readonly:
             raise PermissionError('{} is read only'.format(self._name))
 
@@ -598,7 +598,7 @@ class Group(Mapping):
 
     def asdict(self, default=False, deep=False):
         """
-        Return a dictionnary.
+        Return a dictionary.
 
         Parameters
         ----------
@@ -652,7 +652,7 @@ class Group(Mapping):
             if isinstance(dtype, Iterable):
                 dtype, kwargs = dtype
                 typename = dtype.__name__
-                # Add more informations for ndarrays
+                # Add more information for ndarrays
                 if issubclass(dtype, ndarray):
                     typelst = [typename]
                     if 'dtype' in kwargs:

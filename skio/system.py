@@ -96,7 +96,7 @@ def validfilename(filename, fullpath=False, posixchars=False, iso9660=False,
     if not validname:
         raise ValueError('All characters in filename are invalid')
 
-    # Check MS-DOS lengh
+    # Check MS-DOS length
     if msdoslenght:
         base, ext = os.path.splitext(validname)
         if len(base) > 8:
@@ -114,7 +114,7 @@ def validfilename(filename, fullpath=False, posixchars=False, iso9660=False,
                 validname += ext[:4]
         validname = checkendstart(validname)
 
-    # Check POSIX lenght
+    # Check POSIX length
     if posixlenght and len(validname) > 14:
         if lenghterror:
             # Raise error

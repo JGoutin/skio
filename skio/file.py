@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 """'File' definition"""
 # TODO:
 # - HDF5 Export and import (For files exported with skio).
 # - Average files
-# - File customozable UnitRegistry
-# - Make HDF5 support and other as optionnal extensions
+# - File customizable UnitRegistry
+# - Make HDF5 support and other as optionals extensions
 
 from skio.group import Group
 from datetime import datetime
@@ -22,16 +23,16 @@ class File(Group):
     """
     Create a new skio.File.
 
-    The skio.File class work like a special Python dictionnary.
+    The skio.File class work like a special Python dictionary.
     Datas that are stored inside will be called with the following rule:
 
     Group :
-        Sub-dictionnary (skio.Group subclass) wich can contain any dataset,
+        Sub-dictionary (skio.Group subclass) which can contain any dataset,
         attribute or group.
     Dataset :
         Data (numpy.ndarray, pandas.DataFrame, ...)
     Attribute :
-        Metadatas (any other data type like int, float, str, list, ...)
+        Metadata (any other data type like int, float, str, list, ...)
 
     This classe is intended to be subclassed and not to be used directly.
 
@@ -42,19 +43,19 @@ class File(Group):
     Subclassing this class, overloading some class variables and create methods
     and class with specific names is needed for activating following features:
 
-    Store file related informations:
-        File contain a "info" Group for store some file related informations
+    Store file related information:
+        File contain a "info" Group for store some file related information
         (modification date, size, ...).
 
-        The list of suported informations is read only but can be
+        The list of supported information is read only but can be
         extended by overloading "_infos_default", "_infos_dtype" and
         "_infos_doc" File class variables excatly like in "Group" class
         ("_infos_default" work like "_default", "_infos_dtype" like
         "_dtype" and "_infos_doc" like "_doc").
 
         For update values of "info" Group, use the "_updateinfos" method. Base
-        informations  (Like modification date, ...) are automaticly update
-        based on the "filename", extra informations (With support added by
+        information  (Like modification date, ...) are automatically updated
+        based on the "filename", extra information (With support added by
         overloading "_infos_default") can also be update with the "extrainfos"
         parameter.
 
@@ -63,7 +64,7 @@ class File(Group):
         (or another format variation specifier).
 
         The "load" method is a special method that try to load the file using
-        all "loadext" methods availables. If there is only one possible
+        all "loadext" available methods. If there is only one possible
         variation of the format, it is possible to overload it directly.
 
         Saving methods names must be "saveext" with "ext" the same name
@@ -88,7 +89,7 @@ class File(Group):
     Default content
     ---------------
     infos : Group
-        Contain some file related informations (modification date, size, ...)
+        Contain some file related information (modification date, size, ...)
     subfiles : List of "File"
         A list of sub-"File" related to this File (Exemple: case of multiple
         Data files stored in one physical file)
@@ -110,13 +111,13 @@ class File(Group):
     _nonewkey = True
 
     def __init__(self, filename=''):
-        # Try openning file
+        # Try opening file
         if filename:
             self.load(filename)
 
     def _updateinfos(self, filename='', extrainfos=None):
         """
-        Update all informations in the "infos" group.
+        Update all information in the "infos" group.
 
         Parameters
         ----------
@@ -200,8 +201,8 @@ class File(Group):
 
     class _Keyinfos(Group):
         """
-        This group contain some file related informations. Theses
-        informations are directly taken from the OS for files on the disk.
+        This group contain some file related information. Theses
+        information are directly taken from the OS for files on the disk.
         """
 
         # Set keys specifications
@@ -229,7 +230,7 @@ class File(Group):
 
         def _updateinfos(self, filename='', extrainfos=None):
             """
-            Update all file informations in this group.
+            Update all file information in this group.
 
             Parameters
             ----------
@@ -244,7 +245,7 @@ class File(Group):
                 else:
                     filename = self['filename']
 
-                # Update generic file informations
+                # Update generic file information
                 if not self['filename']:
                     self['datemodification'] = datetime.today()
                     self['datecreation'] = datetime.today()
@@ -256,7 +257,7 @@ class File(Group):
                         datetime.fromtimestamp(getctime(filename))
                     self["bytesize"] = getsize(filename)
 
-                # Update extra informations
+                # Update extra information
                 if extrainfos:
                     self.update(extrainfos)
 

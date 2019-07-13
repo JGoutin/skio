@@ -2,12 +2,12 @@
 # TODO:
 # - Read version.
 # - Import Git build version.
-# - Tool for manage optional requierements.
+# - Tool for manage optional requirements.
 # - Easy extensible package.
 
 from setuptools import setup
 
-# Import infrmations from some files
+# Import information from some files
 with open('README.RST', encoding='utf-8') as f:
     README = f.read()
 
@@ -19,7 +19,7 @@ with open('skio/version.py', encoding='utf-8') as f:
 
 # Set Setuptools setup
 setup(
-    # Package informations
+    # Package information
     name='scikit-io',
     version=VERSION,
     description=('Specific and proprietary data file formats I/O SciKit '
@@ -46,10 +46,10 @@ setup(
     # Package directory
     packages=['skio'],
 
-    # Mandatory requierements
+    # Mandatory requirements
     install_requires=['numpy', 'pandas'],
 
-    # Optional requierements
+    # Optional requirements
     extras_require={
         'hdf5': ['h5py'],
         'dev':  ['pytest', 'pytest-cov'],
